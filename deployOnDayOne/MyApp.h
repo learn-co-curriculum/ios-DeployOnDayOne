@@ -12,7 +12,12 @@
 @interface MyApp : NSObject
 
 @property (strong, nonatomic) NSString *currentUser;
+@property (strong, nonatomic) NSMutableDictionary *database;
+@property (strong, nonatomic) NSMutableArray *interviewQuestions;
 
 -(void)execute;
+
+-(void)logIn;
+
 
 @end
