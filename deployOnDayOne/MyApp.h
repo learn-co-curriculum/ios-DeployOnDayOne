@@ -13,6 +13,30 @@
 
 @property (strong, nonatomic) NSString *currentUser;
 
--(void)execute;
+@property (strong, nonatomic) NSMutableDictionary *interviewInfo;
+
+@property (strong, nonatomic) NSMutableDictionary *interviewQuestions;
+
+- (void)execute;
+
+- (NSString *)logIn;
+
+- (void)mainMenu;
+
+- (void)interviewUser;
+
+- (void)askSelectedQuestion;
+
+- (void)askRandomQuestion;
+
+- (void)selectCategory;
+
+- (void)addQuestion;
+
+- (void)addQuestionToCategory;
+
+- (void)displayInterview;
+
+- (NSString *)requestKeyboardInput;
 
 @end
