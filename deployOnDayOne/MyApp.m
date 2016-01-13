@@ -198,7 +198,7 @@ NSMutableDictionary *interviewQuestions;
         numQuestionsInCategory = [questionsToCheck count];
         if (0 == numQuestionsInCategory)
         {
-            NSLog(@"All questions asked!");
+            NSLog(@"All questions asked!\n");
             break;
         }
         //Pick a random question
