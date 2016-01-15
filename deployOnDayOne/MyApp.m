@@ -22,9 +22,16 @@
     
     NSLog(@"Username: ");
     
-    NSArray *temp = @[@"Why do you want to be a student at the Flatiron School?", @"What do you like doing in your spare time", @"What do you hope to gain from this experience?"];
+    NSArray *temp = @[@"Why do you want to be a student at the Flatiron School?", @"What do you like doing in your spare time?", @"What do you hope to gain from this experience?"];
     
     NSMutableArray *questions = [temp mutableCopy];
+    
+    NSMutableArray *interviewedStudents = [[NSMutableArray alloc]init];
+    
+    [interviewedStudents addObject: @[@"John", @"Why do you want to be a student at the Flatiron School?", @"My band is not doing very well. Seeking a career change."] ];
+    [interviewedStudents addObject: @[@"Paul", @"What do you like doing in your spare time?", @"I like to sing and occasionally play guitar."]];
+    [interviewedStudents addObject: @[@"Ringo", @"What do you hope to gain from this experience?", @"I hope to gain the love and admiration of my peers. Please."] ];
+    
     
     NSString * currentUser = [self requestKeyboardInput];
     
@@ -44,13 +51,13 @@
     
     NSString * userChoice = [self requestKeyboardInput];
     
-    while ([self navigateUser: userChoice withPromptQuestions: questions] == false) {
+    while ([self navigateUser: userChoice withPromptQuestions: questions andStudents:interviewedStudents] == false) {
         
         [self userMenu];
         
         userChoice = [self requestKeyboardInput];
         
-        [self navigateUser:userChoice withPromptQuestions: questions];
+        [self navigateUser:userChoice withPromptQuestions: questions andStudents:interviewedStudents];
     };
     
 }
@@ -83,11 +90,11 @@
 
 -(void)userMenu{
     
-    NSLog(@"\nPlease choose from the following three options:\n\n1. Be interviewed \n\n2. Write a new interview question.\n\nSimply type in the option number you are interested in, and press enter.");
+    NSLog(@"\nPlease choose from the following three options:\n\n1. Be interviewed \n\n2. Write a new interview question.\n\n3. Read an interview with another student.\n\nSimply type in the option number you are interested in, and press enter.");
 }
 
 
--(BOOL)navigateUser:(NSString *)userChoice withPromptQuestions:(NSMutableArray *) questions {
+-(BOOL)navigateUser:(NSString *)userChoice withPromptQuestions:(NSMutableArray *) questions andStudents:(NSMutableArray *)interviewedStudents {
    
         if([userChoice isEqualToString: @"1"]) {
             
@@ -98,6 +105,13 @@
         else if ([userChoice isEqualToString: @"2"]){
         
             [self writeANewInterviewQuestion: questions];
+            
+            return true;
+            
+        }
+        else if ([userChoice isEqualToString: @"3"]){
+        
+            [self readAnInterviewWithAnotherStudent: interviewedStudents];
             
             return true;
         }
@@ -112,7 +126,7 @@
 
 -(void)beInterviewed:(NSMutableArray *)questions{
     
-    NSLog(@"You have chosen to be interviewed.\n\n1. Choose the question you will be asked.\n\n2. Be asked a random question.\n\nSimply type in the option number you are interested in, and press enter.");
+    NSLog(@"You have chosen to be interviewed.\n\n1. Choose the question you will be asked.\n2. Be asked a random question.\n\nSimply type in the option number you are interested in, and press enter.");
     
     NSString *reply = [self requestKeyboardInput];
     
@@ -169,8 +183,33 @@
     
     [questions addObject: newQuestion];
     
-    NSLog(@"Thank you! Your question has been added to our database, and will now be answerable by other candidates!");
     
+}
+
+-(void)readAnInterviewWithAnotherStudent:(NSArray *)interviewedStudents{
+    
+    NSLog(@"You have chosen to read an interview with another student.\n\nPlease select a student from the list below: \n.");
+    
+    for(NSUInteger i = 0; i < [interviewedStudents count]; i++) {
+        
+        NSLog(@"%lu. %@ ", i+1, interviewedStudents[i][0]);
+    }
+    
+    NSString *selection = [self requestKeyboardInput];
+    while([selection integerValue] > [interviewedStudents count]) {
+        
+        NSLog(@"Invalid selection. Please see the list above and choose a valid student number. \n\n");
+        
+        selection = [self requestKeyboardInput];
+    }
+    
+    NSLog(@"You have chosen to read %@'s interview: \n", interviewedStudents[[selection integerValue]-1]);
+    
+    for(NSInteger i = 1; i < [interviewedStudents count]; i++) {
+        
+        NSLog(@"%@", interviewedStudents[[selection integerValue]-1][i]);
+    }
+
 }
 
 -(NSString *)requestKeyboardInput
