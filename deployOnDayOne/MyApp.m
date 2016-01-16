@@ -8,6 +8,7 @@
 
 #import "MyApp.h"
 
+#define NSLog(FORMAT, ...) printf("%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 
 
 @interface MyApp()
@@ -61,7 +62,13 @@
                 [self writeANewQuestionSubmenuInQuestions: interviewQuestions];
                 break;
             case 2:
-                [self readAnInterviewWithAnotherStudentSubmenuFromDictionary: usersInterviewQuestionsAndAnswers withCurrentUser:currentUser];
+                if ( [ [usersInterviewQuestionsAndAnswers allKeys] count]  < 2 ) {
+                    NSLog(@"No other interviews exsist yet. Try again later.");
+                }
+                else{
+                    [self readAnInterviewWithAnotherStudentSubmenuFromDictionary: usersInterviewQuestionsAndAnswers withCurrentUser:currentUser];
+                }
+                
                 break;
             case 3:
                 NSLog(@"You have logged out. Goodbye!");
@@ -121,12 +128,12 @@
         NSString *userOption;
         NSUInteger userNumberOption;
         
-        NSLog(@"Please choose from the following three options:\n\n");
+        NSLog(@"Please choose from the following five options:\n\n");
         NSLog(@"1. Be interviewed. \n");
         NSLog(@"2. Write a new interview question. \n");
-        NSLog(@"3. Read an interview with another student. \n\n\n");
-        NSLog(@"4. Logout");
-        NSLog(@"5. Exit");
+        NSLog(@"3. Read an interview with another student. \n");
+        NSLog(@"4. Logout\n");
+        NSLog(@"5. Exit\n");
         
         NSLog(@"Simply type in the option number you are interested in, and press enter.");
         userOption = [self requestKeyboardInput];
@@ -174,24 +181,33 @@
         NSLog(@"\nChoose a question from the list below\n");
         NSLog(@"Simply type the option number you are interested in for the question below and press enter.\n\n");
         
-        NSArray *currentQuestions = interviewQuestions[currentUserCategory];
+        if ([interviewQuestions[currentUserCategory] count] < 1) {
+            NSLog(@"No questions exsist for this category. Please try again later.");
+            
+        }
+        else{
+            
+            NSArray *currentQuestions = interviewQuestions[currentUserCategory];
+            
+            for (NSUInteger n = 0; n < [currentQuestions count]; n++) {
+                NSLog(@"%lu. %@\n", n + 1, currentQuestions[n]);
+            }
+            
+            userOption = [self requestKeyboardInput];
+            
+            NSLog(@"You have selected the following question: \n");
+            NSLog(@"%@\n",currentQuestions[ [userOption integerValue ] - 1]);
+            
+            currentQuestion = currentQuestions[ [userOption integerValue] ];
+            
+            NSLog(@"Please enter your response here:");
+            
+            answer = [self requestKeyboardInput];
+            
+            usersInterviewQuestionsAndAnswers[currentUser][currentInterview][currentQuestion] = answer;
         
-        for (NSUInteger n = 0; n < [currentQuestions count]; n++) {
-            NSLog(@"%lu. %@\n", n + 1, currentQuestions[n]);
         }
 
-        userOption = [self requestKeyboardInput];
-        
-        NSLog(@"You have selected the following question: \n");
-        NSLog(@"%@\n",currentQuestions[ [userOption integerValue ] - 1]);
-        
-        currentQuestion = currentQuestions[ [userOption integerValue] ];
-        
-        NSLog(@"Please enter your response here:");
-        
-        answer = [self requestKeyboardInput];
-        
-        usersInterviewQuestionsAndAnswers[currentUser][currentInterview][currentQuestion] = answer;
     }
     
     else if ([userOption isEqualToString: @"2"]){
