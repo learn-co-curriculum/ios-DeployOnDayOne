@@ -15,4 +15,26 @@
 
 -(void)execute;
 
+-(NSString *)login;
+
+-(NSString *)requestKeyboardInput;
+
+-(NSString *)mainMenu;
+
+-(NSString *)interviewMenu;
+
+-(NSDictionary *)addQuestion;
+
+-(NSDictionary *)printQuestions: (NSMutableArray *)listOfQuestions :(NSMutableArray *)questionAlreadyAnswered;
+
+-(BOOL)isQuestionAnswered: (NSMutableArray *)questionAlreadyAnswered :(NSString *)q;
+
+-(NSDictionary *)beAskedARandomQuestion :(NSMutableArray *)listofQuestions;
+
+-(void)setUpUser: (NSString *)userName :(NSMutableDictionary *)userInfo;
+
+-(void)readInterview :(NSMutableDictionary *)differentUsers;
+
+-(void)logout;
+
 @end
